@@ -17,18 +17,22 @@ public class CMISOperation {
 
     public static void main(final String args[]) {
         if (args.length < 6) {
-            System.out.println("Usage : <BonitaURL> <BonitaUser> <BonitaPassword> <folderId> <procId> <picker>");
+            System.out.println("Usage : <BonitaURL> <BonitaUser> <BonitaPassword> <folderId> <procId> <picker> <PropertiesFile>");
             return;
         }
 
+        
         String bonitaUrl = args[0];
         String bonitaUser = args[1];
         String bonitaPassword = args[2];
         String folderId = args[3];
         String procId = args[4];
         String picker = args[5];
+        PropertiesLoader.propertiesPathParam = args[6];
+        String propertiesPath = System.getProperty("properties.path");
+        System.out.println("properties path Env=["+propertiesPath+"] / Parameters["+propertiesPath+"]");
 
-        final Map<String, String> map = new HashMap<String, String>();
+        final Map<String, String> map = new HashMap<>();
         map.put("server.url", bonitaUrl);
         map.put("application.name", "bonita");
         APITypeManager.setAPITypeAndParams(ApiAccessType.HTTP, map);
