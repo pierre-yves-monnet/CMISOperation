@@ -2,13 +2,17 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.bonitasoft.CMISOperation</groupId>
 	<artifactId>CMISCall</artifactId>
-	<version>1.1.0</version>
+	<version>1.2.0</version>
 	<properties>
-		
+
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 	<dependencies>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.chemistry.opencmis/chemistry-opencmis-client-impl -->
+
+
 		<dependency>
 			<groupId>org.bonitasoft.engine</groupId>
 			<artifactId>bonita-client</artifactId>
@@ -20,7 +24,14 @@
 			<artifactId>bonita-web-extensions</artifactId>
 			<version>7.10.4</version>
 		</dependency>
-
+		
+		<!-- 
+		<dependency>
+			<groupId>org.apache.chemistry.opencmis</groupId>
+			<artifactId>chemistry-opencmis-client-impl</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+  -->
 	</dependencies>
 	<build>
 		<plugins>
@@ -42,7 +53,8 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- <plugin>
+			<!-- 
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
@@ -50,38 +62,41 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
+							<mainClass>com.bonitasoft.cmis.CMISOperation</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			 -->
+			<!-- WITH DEPENDENCY -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4.1</version>
+				<configuration>
+					<archive>
+						<manifest>
 							<mainClass>
 								com.bonitasoft.cmis.CMISOperation
 							</mainClass>
 						</manifest>
 					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
 				</configuration>
-			</plugin> 
-			-->
-			<plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-assembly-plugin</artifactId>
-    <executions>
-        <execution>
-            <phase>package</phase>
-            <goals>
-                <goal>single</goal>
-            </goals>
-            <configuration>
-                <archive>
-                <manifest>
-                    <mainClass>
-                       com.bonitasoft.cmis.CMISOperation
-                    </mainClass>
-                </manifest>
-                </archive>
-                <descriptorRefs>
-                    <descriptorRef>jar-with-dependencies</descriptorRef>
-                </descriptorRefs>
-            </configuration>
-        </execution>
-    </executions>
-</plugin>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<id>make-assembly</id>
+						<goals>
+							<goal>single</goal>
+						</goals>
+
+					</execution>
+				</executions>
+			</plugin>
+			
 		</plugins>
 	</build>
 </project>

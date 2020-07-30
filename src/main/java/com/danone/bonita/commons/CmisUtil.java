@@ -128,7 +128,35 @@ public class CmisUtil {
 		return result.toString();
 	}
 
-	private Folder getRootFolderbyPath(String path) {
+	/**
+	 * add it to be call by a connector or a direct web application
+	 * @param path
+	 * @return
+	 */
+	public String listChildren(String path) {
+        JSONArray result = new JSONArray();
+
+        Folder folder = null;
+        
+        folder = getRootFolderbyPath(path);
+        
+        if(folder != null){
+            List<CmisObject> child = getGetDescendantFolder(folder, cmisSession);
+            // Get parent
+            if ((folder.getPath().length() > path.length()) && folder.getParentId() != null) {
+                result.put(JsonUtils.cmisObject2Json("..", folder.getType(), folder.getParentId()));
+            }
+
+            for (CmisObject item: child) {
+                JSONObject tmp = JsonUtils.cmisObject2Json(item);
+                result.put(tmp);
+            }
+        }
+        return result.toString();
+    }
+	
+	
+	public Folder getRootFolderbyPath(String path) {
 		Folder folder = null;
 		CmisObject cmisObject = cmisSession.getObjectByPath(path);
 		if (cmisObject.getType().getBaseTypeId().equals(BaseTypeId.CMIS_FOLDER)) {
@@ -139,7 +167,7 @@ public class CmisUtil {
 		return folder;
 	}
 
-	private String getPickerRootFolderPath(String procId, String pickerId, RestAPIContext context) {
+	public String getPickerRootFolderPath(String procId, String pickerId, RestAPIContext context) {
 		String path = "/";
 		Long longProcId = Long.parseLong(procId);
 		try {
